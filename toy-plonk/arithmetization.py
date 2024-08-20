@@ -1,4 +1,5 @@
-from setup import n
+import galois
+from setup import n, roots, Fp
 
 def pad_array(a, n):
     return a + [0]*(n - len(a))
@@ -36,3 +37,28 @@ print(f"qm = {qm}")
 print(f"qc = {qc}")
 print(f"qo = {qo}")
 print(f"qpi = {qpi}")
+
+def to_galois_array(vector, field):
+    # normalize to positive values
+    a = [x % field.order for x in vector]
+    return field(a)
+
+def to_poly(x, v, field):
+    assert len(x) == len(v)
+    y = to_galois_array(v, field) if type(v) == list else v
+    return galois.lagrange_poly(x, y)
+
+QL = to_poly(roots, ql, Fp)
+QR = to_poly(roots, qr, Fp)
+QM = to_poly(roots, qm, Fp)
+QC = to_poly(roots, qc, Fp)
+QO = to_poly(roots, qo, Fp)
+QPI = to_poly(roots, qpi, Fp)
+
+print("--- Gate Polynomials ---")
+print(f"QL = {QL}")
+print(f"QR = {QR}")
+print(f"QM = {QM}")
+print(f"QC = {QC}")
+print(f"QO = {QO}")
+print(f"QPI = {QPI}")

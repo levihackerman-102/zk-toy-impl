@@ -1,6 +1,6 @@
 import numpy as np
 from setup import n, roots, Fp
-from arithmetization import a, b, c
+from arithmetization import a, b, c, to_poly
 
 def print_sigma(sigma, a, b, c, r):
     group_size = len(sigma) // 3
@@ -59,3 +59,30 @@ print("\n\n--- Sigma ---")
 print(f"sigma1 = {sigma1}")
 print(f"sigma2 = {sigma2}")
 print(f"sigma3 = {sigma3}")
+
+S1 = to_poly(roots, sigma1, Fp)
+S2 = to_poly(roots, sigma2, Fp)
+S3 = to_poly(roots, sigma3, Fp)
+
+I1 = to_poly(roots, c1_roots, Fp)
+I2 = to_poly(roots, c2_roots, Fp)
+I3 = to_poly(roots, c3_roots, Fp)
+
+padding = 3
+for i in range(0, len(roots)):
+    s  = f"i = {i:{padding}} --> {roots[i]:{padding}} "
+    s += f"   I1({roots[i]:{padding}}) = {I1(roots[i]):{padding}} "
+    s += f"   I2({roots[i]:{padding}}) = {I2(roots[i]):{padding}} "
+    s += f"   I3({roots[i]:{padding}}) = {I3(roots[i]):{padding}} "
+    s += f"   S1({roots[i]:{padding}}) = {S1(roots[i]):{padding}} "
+    s += f"   S2({roots[i]:{padding}}) = {S2(roots[i]):{padding}} "
+    s += f"   S3({roots[i]:{padding}}) = {S3(roots[i]):{padding}} "
+    print(s)
+
+    assert I1(roots[i]) == roots[i], f"I1({roots[i]}) != {roots[i]}"
+    assert I2(roots[i]) == k1 * roots[i], f"I2({roots[i]}) != {k1 * roots[i]}"
+    assert I3(roots[i]) == k2 * roots[i], f"I3({roots[i]}) != {k2 * roots[i]}"
+
+    assert S1(roots[i]) == sigma1[i], f"S1({roots[i]}) != {sigma1[i]}"
+    assert S2(roots[i]) == sigma2[i], f"S2({roots[i]}) != {sigma2[i]}"
+    assert S3(roots[i]) == sigma3[i], f"S3({roots[i]}) != {sigma3[i]}"

@@ -1,5 +1,6 @@
 import galois
 import numpy as np
+from util import SRS
 
 # Setup
 
@@ -25,3 +26,10 @@ assert omega**(n) == 1, f"omega (ω) {omega} is not a root of unity"
 
 roots = Fp([omega**i for i in range(n)])
 print(f"roots = {roots}")
+
+def generate_tau(encrypted=False):
+    return SRS(Fp.Random(), n) if encrypted else Fp.Random()
+
+tau = generate_tau()
+print(f"--- Tau ---")
+print(tau)
